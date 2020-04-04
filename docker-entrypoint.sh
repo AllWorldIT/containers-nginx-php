@@ -42,6 +42,7 @@ if [ -n "$START_POSTFIX" ]; then
 	echo "smtpd_helo_required = yes" >> /etc/postfix/main.cf
 	echo "strict_rfc821_envelopes = yes" >> /etc/postfix/main.cf
 	echo "message_size_limit = 102400000" >> /etc/postfix/main.cf
+	echo "mailbox_size_limit = 0" >> /etc/postfix/main.cf
 	echo "### END DOCKER CONFIG ###" >> /etc/postfix/main.cf
 
 	# Setup aliases
