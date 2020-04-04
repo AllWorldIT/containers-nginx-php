@@ -47,13 +47,17 @@ RUN set -ex; \
 	true "Web root"; \
 	mkdir -p /var/www/html; \
 	chown www-data:www-data /var/www/html; chmod 0755 /var/www/html; \
+	true "Postfix"; \
+	apk add --no-cache postfix; \
 	true "Cleanup"; \
 	rm -f /var/cache/apk/*; \
 	true "Scriptlets"; \
-	mkdir /docker-entrypoint-pre-exec.d; \
 	mkdir /docker-entrypoint-pre-init.d; \
-	chmod 750 /docker-entrypoint-pre-exec.d; \
-	chmod 750 /docker-entrypoint-pre-init.d
+	mkdir /docker-entrypoint-init.d; \
+	mkdir /docker-entrypoint-pre-exec.d; \
+	chmod 750 /docker-entrypoint-pre-init.d; \
+	chmod 750 /docker-entrypoint-init.d; \
+	chmod 750 /docker-entrypoint-pre-exec.d
 
 
 # Supervisord
@@ -72,6 +76,11 @@ EXPOSE 80
 COPY config/php.ini /etc/php7/conf.d/50-setting.ini
 COPY config/php-fpm.conf /etc/php7/php-fpm.d/www.conf
 COPY config/supervisord.d/php-fpm.conf /etc/supervisor/conf.d/php-fpm.conf
+
+# Postfix
+COPY config/supervisord.d/postfix.conf.disabled /etc/supervisor/conf.d/postfix.conf.disabled
+
+EXPOSE 25
 
 # Entrypoint
 COPY docker-entrypoint.sh /usr/local/sbin/
