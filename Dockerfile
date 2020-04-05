@@ -24,6 +24,7 @@ RUN set -ex; \
 		php7-imap \
 		php7-intl \
 		php7-json \
+		php7-ldap \
 		php7-mbstring \
 		php7-mcrypt \
 		php7-opcache \
