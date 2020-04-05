@@ -15,17 +15,20 @@ RUN set -ex; \
 		php7-ctype \
 		php7-curl \
 		php7-dom \
+		php7-exif \
+		php7-fileinfo \
 		php7-fpm \
 		php7-gd \
 		php7-gettext \
 		php7-iconv \
-		php7-intl \
 		php7-imap \
+		php7-intl \
 		php7-json \
 		php7-mbstring \
 		php7-mcrypt \
 		php7-opcache \
 		php7-openssl \
+		php7-pecl-imagick \
 		php7-phar \
 		php7-posix \
 		php7-session \
