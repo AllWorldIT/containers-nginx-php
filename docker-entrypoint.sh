@@ -115,4 +115,4 @@ fi
 
 
 echo 'INFO: Ready for start up'
-exec /usr/bin/supervisord --config /etc/supervisor/supervisord.conf
+exec /usr/bin/env -i /usr/bin/supervisord --config /etc/supervisor/supervisord.conf
