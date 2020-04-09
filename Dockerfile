@@ -33,6 +33,7 @@ RUN set -ex; \
 		php7-phar \
 		php7-posix \
 		php7-session \
+		php7-simplexml \
 		php7-sockets \
 		php7-sodium \
 		php7-xml \
