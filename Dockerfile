@@ -91,3 +91,6 @@ EXPOSE 25
 COPY docker-entrypoint.sh /usr/local/sbin/
 ENTRYPOINT ["docker-entrypoint.sh"]
 
+# Health check
+HEALTHCHECK CMD curl --fail http://localhost:80 || exit 1
+
