@@ -3,4 +3,15 @@ include:
     ref: master
     file: '/default.yml'
 
+stages:
+  - build
+  - test
+  - release
+  - deploy
+
+trigger_lempstack:
+  stage: deploy
+  trigger:
+    project: allworldit/docker/lempstack
+    strategy: depend
 

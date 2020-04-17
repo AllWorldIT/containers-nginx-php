@@ -1,10 +1,5 @@
 #!/bin/bash
 
-
-find /etc/nginx/conf.d
-
-cat /etc/nginx/conf.d/default.conf
-
 cat <<EOF > /etc/nginx/conf.d/default.conf
 server {
 	listen 80;
