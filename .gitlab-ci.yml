@@ -15,5 +15,5 @@ trigger_lempstack:
     project: allworldit/docker/lempstack
     strategy: depend
   only:
-    - master@allworldit/docker/lepstack
+    - tags@allworldit/docker/lepstack
 
