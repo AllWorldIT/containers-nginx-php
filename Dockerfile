@@ -1,4 +1,4 @@
-FROM allworldit/docker/base
+FROM registry.gitlab.iitsp.com/allworldit/docker/base
 
 LABEL maintainer="Nigel Kukard <nkukard@LBSD.net>"
 
@@ -61,31 +61,41 @@ RUN set -ex; \
 COPY config/nginx.conf /etc/nginx/nginx.conf
 COPY config/supervisord.d/nginx.conf /etc/supervisor/conf.d/nginx.conf
 COPY init.d/50-nginx.sh /docker-entrypoint-init.d/50-nginx.sh
+COPY pre-init-tests.d/50-nginx.sh /docker-entrypoint-pre-init-tests.d/50-nginx.sh
 RUN set -eux \
 		chown root:root \
 			/etc/nginx/nginx.conf \
 			/etc/supervisor/conf.d/nginx.conf \
-			/docker-entrypoint-init.d/50-nginx.sh; \
+			/docker-entrypoint-init.d/50-nginx.sh \
+			/docker-entrypoint-pre-init-tests.d/50-nginx.sh; \
 		chmod 0644 \
 			/etc/nginx/nginx.conf \
 			/etc/supervisor/conf.d/nginx.conf; \
 		chmod 0755 \
-			/docker-entrypoint-init.d/50-nginx.sh
+			/docker-entrypoint-init.d/50-nginx.sh \
+			/docker-entrypoint-pre-init-tests.d/50-nginx.sh
 EXPOSE 80
 
 # PHP-FPM
 COPY config/php.ini /etc/php7/conf.d/50-docker.ini
 COPY config/php-fpm.conf /etc/php7/php-fpm.d/www.conf
 COPY config/supervisord.d/php-fpm.conf /etc/supervisor/conf.d/php-fpm.conf
+COPY pre-init-tests.d/50-php-fpm.sh /docker-entrypoint-pre-init-tests.d/50-php-fpm.sh
+COPY tests.d/50-php-fpm.sh /docker-entrypoint-tests.d/50-php-fpm.sh
 RUN set -eux \
 		chown root:root \
 			/etc/php7/conf.d/50-docker.ini \
 			/etc/php7/php-fpm.d/www.conf \
-			/etc/supervisor/conf.d/php-fpm.conf; \
+			/etc/supervisor/conf.d/php-fpm.conf \
+			/docker-entrypoint-pre-init-tests.d/50-php-fpm.sh \
+			/docker-entrypoint-tests.d/50-php-fpm.sh; \
 		chmod 0644 \
 			/etc/php7/conf.d/50-docker.ini \
 			/etc/php7/php-fpm.d/www.conf \
 			/etc/supervisor/conf.d/php-fpm.conf; \
+		chmod 0755 \
+			/docker-entrypoint-pre-init-tests.d/50-php-fpm.sh \
+			/docker-entrypoint-tests.d/50-php-fpm.sh
 
 # Health check
 HEALTHCHECK CMD curl --fail http://localhost:80 || exit 1
