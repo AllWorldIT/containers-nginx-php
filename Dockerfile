@@ -1,10 +1,11 @@
-FROM alpine:3.11
+FROM allworldit/docker/base
+
+LABEL maintainer="Nigel Kukard <nkukard@LBSD.net>"
+
 
 ENV PHP_VERSION=7.3
 
 RUN set -ex; \
-	true "Supervisord"; \
-	apk add --no-cache supervisor; \
 	true "Nginx"; \
 	apk add --no-cache nginx; \
 	ln -sf /dev/stdout /var/log/nginx/access.log; \
@@ -52,44 +53,39 @@ RUN set -ex; \
 	true "Web root"; \
 	mkdir -p /var/www/html; \
 	chown www-data:www-data /var/www/html; chmod 0755 /var/www/html; \
-	true "Postfix"; \
-	apk add --no-cache postfix; \
 	true "Cleanup"; \
-	rm -f /var/cache/apk/*; \
-	true "Scriptlets"; \
-	mkdir /docker-entrypoint-pre-init.d; \
-	mkdir /docker-entrypoint-init.d; \
-	mkdir /docker-entrypoint-pre-exec.d; \
-	chmod 750 /docker-entrypoint-pre-init.d; \
-	chmod 750 /docker-entrypoint-init.d; \
-	chmod 750 /docker-entrypoint-pre-exec.d
+	rm -f /var/cache/apk/*
 
-
-# Supervisord
-COPY config/supervisord.conf /etc/supervisor/supervisord.conf
-
-# Crond
-COPY config/supervisord.d/crond.conf /etc/supervisor/conf.d/crond.conf
 
 # Nginx
 COPY config/nginx.conf /etc/nginx/nginx.conf
 COPY config/supervisord.d/nginx.conf /etc/supervisor/conf.d/nginx.conf
-
+COPY init.d/50-nginx.sh /docker-entrypoint-init.d/50-nginx.sh
+RUN set -eux \
+		chown root:root \
+			/etc/nginx/nginx.conf \
+			/etc/supervisor/conf.d/nginx.conf \
+			/docker-entrypoint-init.d/50-nginx.sh; \
+		chmod 0644 \
+			/etc/nginx/nginx.conf \
+			/etc/supervisor/conf.d/nginx.conf; \
+		chmod 0755 \
+			/docker-entrypoint-init.d/50-nginx.sh
 EXPOSE 80
 
 # PHP-FPM
-COPY config/php.ini /etc/php7/conf.d/50-setting.ini
+COPY config/php.ini /etc/php7/conf.d/50-docker.ini
 COPY config/php-fpm.conf /etc/php7/php-fpm.d/www.conf
 COPY config/supervisord.d/php-fpm.conf /etc/supervisor/conf.d/php-fpm.conf
-
-# Postfix
-COPY config/supervisord.d/postfix.conf.disabled /etc/supervisor/conf.d/postfix.conf.disabled
-
-EXPOSE 25
-
-# Entrypoint
-COPY docker-entrypoint.sh /usr/local/sbin/
-ENTRYPOINT ["docker-entrypoint.sh"]
+RUN set -eux \
+		chown root:root \
+			/etc/php7/conf.d/50-docker.ini \
+			/etc/php7/php-fpm.d/www.conf \
+			/etc/supervisor/conf.d/php-fpm.conf; \
+		chmod 0644 \
+			/etc/php7/conf.d/50-docker.ini \
+			/etc/php7/php-fpm.d/www.conf \
+			/etc/supervisor/conf.d/php-fpm.conf; \
 
 # Health check
 HEALTHCHECK CMD curl --fail http://localhost:80 || exit 1
