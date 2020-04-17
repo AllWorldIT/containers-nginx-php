@@ -16,7 +16,18 @@ The following also needs to be specified...
 * `POSTFIX_MYHOSTNAME`: Hostname for local email delivery.
 * `POSTFIX_RELAYHOST`: The contents of relayhost, the server we're relaying mail via.
 
-The follwing aliases are created and forwarded to `$POSTFIX_ROOT_ADDRESS`: abuse, admin, administrator, webmaster, postmaster, hostmaster, noreply
+The follwing aliases are created and forwarded to `$POSTFIX_ROOT_ADDRESS` by default: abuse, admin, administrator, webmaster, postmaster, hostmaster, noreply
+
+To override each one, you can use one of the following optionals...
+
+* `POSTFIX_ROOT_ADDRESS`
+* `POSTFIX_ABUSE_ADDRESS`
+* `POSTFIX_ADMIN_ADDRESS`
+* `POSTFIX_ADMINISTRATOR_ADDRESS`
+* `POSTFIX_WEBMASTER_ADDRESS`
+* `POSTFIX_POSTMASTER_ADDRESS`
+* `POSTFIX_HOSTMASTER_ADDRESS`
+* `POSTFIX_NOREPLY_ADDRESS`
 
 
 

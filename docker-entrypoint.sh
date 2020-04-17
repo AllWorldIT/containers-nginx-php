@@ -28,6 +28,29 @@ if [ -n "$START_POSTFIX" ]; then
 		exit 1
 	fi
 
+	# Check configurable options
+	if [ -z "$POSTFIX_ABUSE_ADDRESS" ]; then
+		POSTFIX_ABUSE_ADDRESS=root
+	fi
+	if [ -z "$POSTFIX_ADMIN_ADDRESS" ]; then
+		POSTFIX_ADMIN_ADDRESS=root
+	fi
+	if [ -z "$POSTFIX_ADMINISTRATOR_ADDRESS" ]; then
+		POSTFIX_ADMINISTRATOR_ADDRESS=root
+	fi
+	if [ -z "$POSTFIX_WEBMASTER_ADDRESS" ]; then
+		POSTFIX_WEBMASTER_ADDRESS=root
+	fi
+	if [ -z "$POSTFIX_POSTMASTER_ADDRESS" ]; then
+		POSTFIX_POSTMASTER_ADDRESS=root
+	fi
+	if [ -z "$POSTFIX_HOSTMASTER_ADDRESS" ]; then
+		POSTFIX_HOSTMASTER_ADDRESS=root
+	fi
+	if [ -z "$POSTFIX_NOREPLY_ADDRESS" ]; then
+		POSTFIX_NOREPLY_ADDRESS=root
+	fi
+
 	# Setup supervisord for postfix
 	mv /etc/supervisor/conf.d/postfix.conf.disabled /etc/supervisor/conf.d/postfix.conf
 
@@ -42,18 +65,19 @@ if [ -n "$START_POSTFIX" ]; then
 	echo "smtpd_helo_required = yes" >> /etc/postfix/main.cf
 	echo "strict_rfc821_envelopes = yes" >> /etc/postfix/main.cf
 	echo "message_size_limit = 102400000" >> /etc/postfix/main.cf
+	echo "mailbox_size_limit = 0" >> /etc/postfix/main.cf
 	echo "### END DOCKER CONFIG ###" >> /etc/postfix/main.cf
 
 	# Setup aliases
 	echo "### START DOCKER CONFIG ###" > /etc/postfix/aliases
 	echo "root: $POSTFIX_ROOT_ADDRESS" >> /etc/postfix/aliases
-	echo "abuse: root" >> /etc/postfix/aliases
-	echo "admin: root" >> /etc/postfix/aliases
-	echo "administrator: root" >> /etc/postfix/aliases
-	echo "webmaster: root" >> /etc/postfix/aliases
-	echo "postmaster: root" >> /etc/postfix/aliases
-	echo "hostmaster: root" >> /etc/postfix/aliases
-	echo "noreply: root" >> /etc/postfix/aliases
+	echo "abuse: $POSTFIX_ABUSE_ADDRESS" >> /etc/postfix/aliases
+	echo "admin: $POSTFIX_ADMIN_ADDRESS" >> /etc/postfix/aliases
+	echo "administrator: $POSTFIX_ADMINISTRATOR_ADDRESS" >> /etc/postfix/aliases
+	echo "webmaster: $POSTFIX_WEBMASTER_ADDRESS" >> /etc/postfix/aliases
+	echo "postmaster: $POSTFIX_POSTMASTER_ADDRESS" >> /etc/postfix/aliases
+	echo "hostmaster: $POSTFIX_HOSTMASTER_ADDRESS" >> /etc/postfix/aliases
+	echo "noreply: $POSTFIX_NOREPLY_ADDRESS" >> /etc/postfix/aliases
 	echo "### END DOCKER CONFIG ###" >> /etc/postfix/aliases
 
 	newaliases
@@ -91,4 +115,4 @@ fi
 
 
 echo 'INFO: Ready for start up'
-exec /usr/bin/supervisord --config /etc/supervisor/supervisord.conf
+exec /usr/bin/env -i /usr/bin/supervisord --config /etc/supervisor/supervisord.conf
