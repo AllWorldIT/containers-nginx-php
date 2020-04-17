@@ -1,7 +1,7 @@
 FROM registry.gitlab.iitsp.com/allworldit/docker/base
 
+ARG VERSION_INFO
 LABEL maintainer="Nigel Kukard <nkukard@LBSD.net>"
-
 
 ENV PHP_VERSION=7.3
 
@@ -39,6 +39,7 @@ RUN set -ex; \
 		php7-sodium \
 		php7-xml \
 		php7-zip \
+		graphviz \
 		curl \
 		; \
 	true "php-fpm: ioncube"; \
@@ -53,6 +54,8 @@ RUN set -ex; \
 	true "Web root"; \
 	mkdir -p /var/www/html; \
 	chown www-data:www-data /var/www/html; chmod 0755 /var/www/html; \
+	true "Versioning"; \
+	if [ -n "$VERSION_INFO" ]; then echo "$VERSION_INFO" >> /.VERSION_INFO; fi; \
 	true "Cleanup"; \
 	rm -f /var/cache/apk/*
 
