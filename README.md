@@ -2,50 +2,63 @@
 
 This is a LEP (Linux Nginx PHP) container for hosting various types of PHP sites.
 
+Check the [Base Image](https://gitlab.iitsp.com/allworldit/docker/base/README.md) for more settings.
 
-# Environment
+This image has a health check which checks `http://localhost` for a response.
 
+# Configuration
 
-## START_POSTFIX
+## Nginx
 
-If set to "yes", this will start postfix inside the container.
+The default document root is `/var/www/html`.
 
-The following also needs to be specified...
+By default nginx is configured to answer with 404 in `/etc/nginx/conf.d/default.conf`. PHP is not enabled by default.
 
-* `POSTFIX_ROOT_ADDRESS`: The email address for system email.
-* `POSTFIX_MYHOSTNAME`: Hostname for local email delivery.
-* `POSTFIX_RELAYHOST`: The contents of relayhost, the server we're relaying mail via.
+If you want to set a domain and have the default 404 for domains not configured then bind mount to
+`/etc/nginx/conf.d/NAME.conf`.
 
-The follwing aliases are created and forwarded to `$POSTFIX_ROOT_ADDRESS` by default: abuse, admin, administrator, webmaster, postmaster, hostmaster, noreply
+Alternatively you can bind mount over `/etc/nginx/conf.d/default.conf`.
 
-To override each one, you can use one of the following optionals...
+An example of a basic PHP configuration can be found below...
+```
+server {
+	listen 80;
+	server_name localhost;
 
-* `POSTFIX_ROOT_ADDRESS`
-* `POSTFIX_ABUSE_ADDRESS`
-* `POSTFIX_ADMIN_ADDRESS`
-* `POSTFIX_ADMINISTRATOR_ADDRESS`
-* `POSTFIX_WEBMASTER_ADDRESS`
-* `POSTFIX_POSTMASTER_ADDRESS`
-* `POSTFIX_HOSTMASTER_ADDRESS`
-* `POSTFIX_NOREPLY_ADDRESS`
+	root /var/www/html;
+	index index.php;
 
+	location ~ [^/]\.php(/|$) {
+		# Mitigation against vulnerabilities in PHP-FPM, just incase
+		fastcgi_split_path_info ^(.+?\.php)(/.*)$;
 
+		# Make sure document exists
+		if (!-f $document_root$fastcgi_script_name) {
+			return 404;
+		}
 
-# Script directories
+		# Mitigate https://httpoxy.org/ vulnerabilities
+		fastcgi_param HTTP_PROXY "";
 
+		# Pass request to PHP-FPM
+		fastcgi_pass unix:/run/php-fpm.sock;
+		fastcgi_index index.php;
 
-## Directory: /docker-entrypoint-pre-init.d
+		# Include fastcgi_params settings
+		include fastcgi_params;
 
-Any file with the .sh extension in this directory will be sourced in before initialization takes place.
+		# PHP-FPM requires the SCRIPT_FILENAME to be set
+		fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
 
+		# Dokuwiki config
+		fastcgi_param REDIRECT_STATUS 200;
+	}
+}
+```
 
-## Directory: /docker-entrypoint-init.d
+## PHP
 
-Any file with the .sh extension in this directory will be sourced for initialization.
+The docker containr PHP settings are added as `/etc/php7/conf.d/50-docker.ini`.
 
-
-## Directory: /docker-entrypoint-pre-exec.d
-
-Any file with the .sh extension in this directory will be sourced in after initialization, before startup.
-
+To specify custom settings you can bind mount with a higher priority number than 50 in the same directory.
 
