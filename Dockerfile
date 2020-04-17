@@ -39,7 +39,7 @@ RUN set -ex; \
 		php7-sodium \
 		php7-xml \
 		php7-zip \
-		graphviz font-bitstream-type1 ghostscript-fonts \
+		graphviz ttf-ubuntu-font-family \
 		curl \
 		; \
 	true "php-fpm: ioncube"; \
