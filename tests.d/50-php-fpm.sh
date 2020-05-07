@@ -1,5 +1,14 @@
 #!/bin/bash
 
+if ! php --version |  grep "PHP $PHP_VERSION"; then
+	echo "CHECK FAILED (php): PHP version does not match PHP_VERSION"
+	echo "= = = OUTPUT = = ="
+	php --version
+	echo "= = = OUTPUT = = ="
+	false
+fi
+
+
 if ! curl --verbose --header 'Host: localhost' 'http://127.0.0.1/' --output test.out; then
 	echo "CHECK FAILED (nginx): Failed to get test php output"
 	echo "= = = OUTPUT = = ="
