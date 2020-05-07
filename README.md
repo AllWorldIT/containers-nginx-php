@@ -2,7 +2,7 @@
 
 This is a LEP (Linux Nginx PHP) container for hosting various types of PHP sites.
 
-Check the [Base Image](https://gitlab.iitsp.com/allworldit/docker/base/README.md) for more settings.
+Check the [Alpine Base Image](https://gitlab.iitsp.com/allworldit/docker/alpine/README.md) for more settings.
 
 This image has a health check which checks `http://localhost` for a response.
 
