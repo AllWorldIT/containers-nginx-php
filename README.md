@@ -6,6 +6,14 @@ Check the [Alpine Base Image](https://gitlab.iitsp.com/allworldit/docker/alpine/
 
 This image has a health check which checks `http://localhost` for a response.
 
+
+# Environment
+
+## ENABLE_IONCUBE
+
+If set to "yes", this will enable ionCube support.
+
+
 # Configuration
 
 ## Nginx
