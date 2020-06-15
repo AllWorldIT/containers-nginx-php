@@ -47,7 +47,7 @@ RUN set -ex; \
 	mkdir -p ioncube; cd ioncube; \
 	curl --show-error --silent --location https://www.ioncube.com/php-7.4.0-beta-loaders/ioncube_loaders_lin_x86-64_7.4_BETA2.tar.gz --output ioncube.tar.gz; \
 	tar -xf ioncube.tar.gz; \
-	install -m 0755 -o root -g root "ioncube/ioncube_loader_lin_${IONCUBE_VERSION}.so" /usr/lib/php7/modules/; \
+	install -m 0755 -o root -g root "ioncube_loader_lin_${IONCUBE_VERSION}.so" /usr/lib/php7/modules/; \
 	echo "zend_extension=/usr/lib/php7/modules/ioncube_loader_lin_${IONCUBE_VERSION}.so" > /etc/php7/conf.d/00_ioncube.ini.disabled; \
 	cd ..; rm -rf ioncube; \
 	true "Users"; \
