@@ -66,7 +66,7 @@ COPY etc/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY etc/supervisor/conf.d/nginx.conf /etc/supervisor/conf.d/nginx.conf
 COPY init.d/50-nginx.sh /docker-entrypoint-init.d/50-nginx.sh
 COPY pre-init-tests.d/50-nginx.sh /docker-entrypoint-pre-init-tests.d/50-nginx.sh
-RUN set -eux \
+RUN set -eux; \
 		chown root:root \
 			/etc/nginx/nginx.conf \
 			/etc/supervisor/conf.d/nginx.conf \
@@ -87,7 +87,7 @@ COPY etc/supervisor/conf.d/php-fpm.conf /etc/supervisor/conf.d/php-fpm.conf
 COPY pre-init-tests.d/50-php-fpm.sh /docker-entrypoint-pre-init-tests.d/50-php-fpm.sh
 COPY tests.d/50-php-fpm.sh /docker-entrypoint-tests.d/50-php-fpm.sh
 COPY tests.d/52-php-fpm-with-ioncube.sh /docker-entrypoint-tests.d/52-php-fpm-with-ioncube.sh
-RUN set -eux \
+RUN set -eux; \
 		chown root:root \
 			/etc/php7/conf.d/50-docker.ini \
 			/etc/php7/php-fpm.d/www.conf \
