@@ -1,6 +1,6 @@
 FROM registry.gitlab.iitsp.com/allworldit/docker/alpine:latest
 
-ARG VERSION_INFO
+ARG VERSION_INFO=
 LABEL maintainer="Nigel Kukard <nkukard@LBSD.net>"
 
 ENV PHP_VERSION=7.4
