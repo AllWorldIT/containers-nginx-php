@@ -84,6 +84,7 @@ EXPOSE 80
 COPY etc/php7/conf.d/50-docker.ini /etc/php7/conf.d/50-docker.ini
 COPY etc/php7/php-fpm.d/www.conf /etc/php7/php-fpm.d/www.conf
 COPY etc/supervisor/conf.d/php-fpm.conf /etc/supervisor/conf.d/php-fpm.conf
+COPY init.d/50-php.sh /docker-entrypoint-init.d/50-php.sh
 COPY pre-init-tests.d/50-php-fpm.sh /docker-entrypoint-pre-init-tests.d/50-php-fpm.sh
 COPY tests.d/50-php-fpm.sh /docker-entrypoint-tests.d/50-php-fpm.sh
 COPY tests.d/52-php-fpm-with-ioncube.sh /docker-entrypoint-tests.d/52-php-fpm-with-ioncube.sh
@@ -92,6 +93,7 @@ RUN set -eux; \
 			/etc/php7/conf.d/50-docker.ini \
 			/etc/php7/php-fpm.d/www.conf \
 			/etc/supervisor/conf.d/php-fpm.conf \
+			/docker-entrypoint-init.d/50-php.sh \
 			/docker-entrypoint-pre-init-tests.d/50-php-fpm.sh \
 			/docker-entrypoint-tests.d/50-php-fpm.sh; \
 		chmod 0644 \
@@ -99,6 +101,7 @@ RUN set -eux; \
 			/etc/php7/php-fpm.d/www.conf \
 			/etc/supervisor/conf.d/php-fpm.conf; \
 		chmod 0755 \
+			/docker-entrypoint-init.d/50-php.sh \
 			/docker-entrypoint-pre-init-tests.d/50-php-fpm.sh \
 			/docker-entrypoint-tests.d/50-php-fpm.sh
 
