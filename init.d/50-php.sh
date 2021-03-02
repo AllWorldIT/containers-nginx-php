@@ -14,4 +14,5 @@ if [ -n "$PHP_TIMEZONE" ]; then
 date.timezone=${PHP_TIMEZONE}
 
 EOF
+fi
 
