@@ -45,7 +45,7 @@ RUN set -ex; \
 		curl \
 		; \
 	true "php-fpm: IonCube config"; \
-	echo "zend_extension=/usr/lib/php7/modules/ioncube_loader_lin_${PHP_VERSION}_${IONCUBE_VERSION}.so" > /etc/php7/conf.d/00_ioncube.ini.disabled; \
+	echo "zend_extension=/usr/lib/php7/modules/ioncube_loader_alpine_${PHP_VERSION}_${IONCUBE_VERSION}.so" > /etc/php7/conf.d/00_ioncube.ini.disabled; \
 	true "Users"; \
 	adduser -u 82 -D -S -H -h /var/www/html -G www-data www-data; \
 	true "Web root"; \
