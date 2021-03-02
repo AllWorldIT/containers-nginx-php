@@ -9,9 +9,13 @@ This image has a health check which checks `http://localhost` for a response.
 
 # Environment
 
-## ENABLE_IONCUBE
+## ENABLE_IONCUBE=yes
 
 If set to "yes", this will enable ionCube support.
+
+## PHP_TIMEZONE=UTC
+
+Set PHP timezone.
 
 
 # Configuration
