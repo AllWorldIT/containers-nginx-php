@@ -4,8 +4,8 @@ ARG VERSION_INFO=
 LABEL maintainer="Nigel Kukard <nkukard@LBSD.net>"
 
 ENV PHP_VERSION=7.4
-ENV IONCUBE_VERSION=7.4
-ENV IONCUBE_URL=https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz
+# Log support ticket at https://support.ioncube.com to get latest Alpine loader
+ENV IONCUBE_VERSION=10.4.5
 
 RUN set -ex; \
 	true "Nginx"; \
@@ -44,13 +44,8 @@ RUN set -ex; \
 		graphviz ttf-ubuntu-font-family \
 		curl \
 		; \
-	true "php-fpm: ioncube"; \
-	mkdir -p ioncube; cd ioncube; \
-	curl --show-error --silent --location "${IONCUBE_URL}" --output ioncube.tar.gz; \
-	tar -xf ioncube.tar.gz; \
-	install -m 0755 -o root -g root "ioncube/ioncube_loader_lin_${IONCUBE_VERSION}.so" /usr/lib/php7/modules/; \
-	echo "zend_extension=/usr/lib/php7/modules/ioncube_loader_lin_${IONCUBE_VERSION}.so" > /etc/php7/conf.d/00_ioncube.ini.disabled; \
-	cd ..; rm -rf ioncube; \
+	true "php-fpm: IonCube config"; \
+	echo "zend_extension=/usr/lib/php7/modules/ioncube_loader_alpine_${PHP_VERSION}_${IONCUBE_VERSION}.so" > /etc/php7/conf.d/00_ioncube.ini.disabled; \
 	true "Users"; \
 	adduser -u 82 -D -S -H -h /var/www/html -G www-data www-data; \
 	true "Web root"; \
@@ -82,6 +77,7 @@ RUN set -eux; \
 EXPOSE 80
 
 # PHP-FPM
+COPY ioncube/ioncube_loader_alpine_${PHP_VERSION}_${IONCUBE_VERSION}.so /usr/lib/php7/modules/
 COPY etc/php7/conf.d/50-docker.ini /etc/php7/conf.d/50-docker.ini
 COPY etc/php7/php-fpm.d/www.conf /etc/php7/php-fpm.d/www.conf
 COPY etc/supervisor/conf.d/php-fpm.conf /etc/supervisor/conf.d/php-fpm.conf
@@ -91,6 +87,7 @@ COPY tests.d/50-php-fpm.sh /docker-entrypoint-tests.d/50-php-fpm.sh
 COPY tests.d/52-php-fpm-with-ioncube.sh /docker-entrypoint-tests.d/52-php-fpm-with-ioncube.sh
 RUN set -eux; \
 		chown root:root \
+			"/usr/lib/php7/modules/ioncube_loader_alpine_${PHP_VERSION}_${IONCUBE_VERSION}.so" \
 			/etc/php7/conf.d/50-docker.ini \
 			/etc/php7/php-fpm.d/www.conf \
 			/etc/supervisor/conf.d/php-fpm.conf \
@@ -102,6 +99,7 @@ RUN set -eux; \
 			/etc/php7/php-fpm.d/www.conf \
 			/etc/supervisor/conf.d/php-fpm.conf; \
 		chmod 0755 \
+			"/usr/lib/php7/modules/ioncube_loader_alpine_${PHP_VERSION}_${IONCUBE_VERSION}.so" \
 			/docker-entrypoint-init.d/50-php.sh \
 			/docker-entrypoint-pre-init-tests.d/50-php-fpm.sh \
 			/docker-entrypoint-tests.d/50-php-fpm.sh
