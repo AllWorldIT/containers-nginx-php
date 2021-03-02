@@ -1,6 +1,8 @@
 #!/bin/bash
 
-mv /etc/php7/conf.d/00_ioncube.ini{.disabled,}
+if [ -e /etc/php7/conf.d/00_ioncube.ini.disabled ]; then
+	mv /etc/php7/conf.d/00_ioncube.ini{.disabled,}
+fi
 
 if ! php --version |  grep "PHP $PHP_VERSION"; then
 	echo "CHECK FAILED (php): PHP version does not match PHP_VERSION"
