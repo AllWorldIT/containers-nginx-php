@@ -48,8 +48,8 @@ RUN set -ex; \
 	mkdir -p ioncube; cd ioncube; \
 	curl --show-error --silent --location "${IONCUBE_URL}" --output ioncube.tar.gz; \
 	tar -xf ioncube.tar.gz; \
-	install -m 0755 -o root -g root "ioncube/ioncube_loader_lin_${IONCUBE_VERSION}_ts.so" /usr/lib/php7/modules/; \
-	echo "zend_extension=/usr/lib/php7/modules/ioncube_loader_lin_${IONCUBE_VERSION}_ts.so" > /etc/php7/conf.d/00_ioncube.ini.disabled; \
+	install -m 0755 -o root -g root "ioncube/ioncube_loader_lin_${IONCUBE_VERSION}.so" /usr/lib/php7/modules/; \
+	echo "zend_extension=/usr/lib/php7/modules/ioncube_loader_lin_${IONCUBE_VERSION}.so" > /etc/php7/conf.d/00_ioncube.ini.disabled; \
 	cd ..; rm -rf ioncube; \
 	true "Users"; \
 	adduser -u 82 -D -S -H -h /var/www/html -G www-data www-data; \
