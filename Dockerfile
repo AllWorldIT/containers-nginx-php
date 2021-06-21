@@ -42,7 +42,7 @@ RUN set -ex; \
 		php7-sodium \
 		php7-xml \
 		php7-zip \
-		graphviz ttf-ubuntu-font-family \
+		graphviz ttf-droid ttf-liberation ttf-dejavu ttf-opensans \
 		curl \
 		; \
 	true "php-fpm: IonCube config"; \
