@@ -49,6 +49,8 @@ RUN set -ex; \
 	echo "zend_extension=/usr/lib/php7/modules/ioncube_loader_alpine_${PHP_VERSION}_${IONCUBE_VERSION}.so" > /etc/php7/conf.d/00_ioncube.ini.disabled; \
 	true "Users"; \
 	adduser -u 82 -D -S -H -h /var/www/html -G www-data www-data; \
+	true "Nginx conf.d"; \
+	mkdir -p /etc/nginx/conf.d; \
 	true "Web root"; \
 	mkdir -p /var/www/html; \
 	chown www-data:www-data /var/www/html; chmod 0755 /var/www/html; \
@@ -66,6 +68,7 @@ COPY pre-init-tests.d/50-nginx.sh /docker-entrypoint-pre-init-tests.d/50-nginx.s
 RUN set -eux; \
 		chown root:root \
 			/etc/nginx/nginx.conf \
+			/etc/nginx/conf.d \
 			/etc/supervisor/conf.d/nginx.conf \
 			/docker-entrypoint-init.d/50-nginx.sh \
 			/docker-entrypoint-pre-init-tests.d/50-nginx.sh; \
@@ -73,6 +76,7 @@ RUN set -eux; \
 			/etc/nginx/nginx.conf \
 			/etc/supervisor/conf.d/nginx.conf; \
 		chmod 0755 \
+			/etc/nginx/conf.d \
 			/docker-entrypoint-init.d/50-nginx.sh \
 			/docker-entrypoint-pre-init-tests.d/50-nginx.sh
 EXPOSE 80
