@@ -70,7 +70,7 @@ server {
 
 ## PHP
 
-The docker containr PHP settings are added as `/etc/php7/conf.d/50-docker.ini`.
+The docker containr PHP settings are added as `/etc/$PHP_NAME/conf.d/50-docker.ini`.
 
 To specify custom settings you can bind mount with a higher priority number than 50 in the same directory.
 
