@@ -3,9 +3,8 @@ FROM registry.gitlab.iitsp.com/allworldit/docker/alpine:latest
 ARG VERSION_INFO=
 LABEL maintainer="Nigel Kukard <nkukard@LBSD.net>"
 
-ENV PHP_VERSION=7.4
-# Log support ticket at https://support.ioncube.com to get latest Alpine loader
-ENV IONCUBE_VERSION=10.4.5
+ENV PHP_NAME=php8
+ENV PHP_VERSION=8.0
 
 RUN set -ex; \
 	true "Nginx"; \
@@ -13,40 +12,40 @@ RUN set -ex; \
 	ln -sf /dev/stdout /var/log/nginx/access.log; \
 	ln -sf /dev/stderr /var/log/nginx/error.log; \
 	true "PHP-FPM"; \
-	apk add --no-cache php7 \
-		php7-bcmath \
-		php7-ctype \
-		php7-curl \
-		php7-dom \
-		php7-exif \
-		php7-fileinfo \
-		php7-fpm \
-		php7-gd \
-		php7-gettext \
-		php7-iconv \
-		php7-imap \
-		php7-intl \
-		php7-json \
-		php7-ldap \
-		php7-mbstring \
-		php7-mcrypt \
-		php7-opcache \
-		php7-openssl \
-		php7-pecl-imagick \
-		php7-phar \
-		php7-posix \
-		php7-session \
-		php7-simplexml \
-		php7-soap \
-		php7-sockets \
-		php7-sodium \
-		php7-xml \
-		php7-zip \
+	apk add --no-cache $PHP_NAME \
+		$PHP_NAME-bcmath \
+		$PHP_NAME-ctype \
+		$PHP_NAME-curl \
+		$PHP_NAME-dom \
+		$PHP_NAME-exif \
+		$PHP_NAME-fileinfo \
+		$PHP_NAME-fpm \
+		$PHP_NAME-gd \
+		$PHP_NAME-gettext \
+		$PHP_NAME-iconv \
+		$PHP_NAME-imap \
+		$PHP_NAME-intl \
+		$PHP_NAME-json \
+		$PHP_NAME-ldap \
+		$PHP_NAME-mbstring \
+		$PHP_NAME-pecl-mcrypt \
+		$PHP_NAME-opcache \
+		$PHP_NAME-openssl \
+		$PHP_NAME-pecl-imagick \
+		$PHP_NAME-phar \
+		$PHP_NAME-posix \
+		$PHP_NAME-session \
+		$PHP_NAME-simplexml \
+		$PHP_NAME-soap \
+		$PHP_NAME-sockets \
+		$PHP_NAME-sodium \
+		$PHP_NAME-xml \
+		$PHP_NAME-xmlreader \
+		$PHP_NAME-xmlwriter \
+		$PHP_NAME-zip \
 		graphviz ttf-droid ttf-liberation ttf-dejavu ttf-opensans \
 		curl \
 		; \
-	true "php-fpm: IonCube config"; \
-	echo "zend_extension=/usr/lib/php7/modules/ioncube_loader_alpine_${PHP_VERSION}_${IONCUBE_VERSION}.so" > /etc/php7/conf.d/00_ioncube.ini.disabled; \
 	true "Users"; \
 	adduser -u 82 -D -S -H -h /var/www/html -G www-data www-data; \
 	true "Nginx conf.d"; \
@@ -82,29 +81,25 @@ RUN set -eux; \
 EXPOSE 80
 
 # PHP-FPM
-COPY ioncube/ioncube_loader_alpine_${PHP_VERSION}_${IONCUBE_VERSION}.so /usr/lib/php7/modules/
-COPY etc/php7/conf.d/50-docker.ini /etc/php7/conf.d/50-docker.ini
-COPY etc/php7/php-fpm.d/www.conf /etc/php7/php-fpm.d/www.conf
+COPY etc/$PHP_NAME/conf.d/50-docker.ini /etc/$PHP_NAME/conf.d/50-docker.ini
+COPY etc/$PHP_NAME/php-fpm.d/www.conf /etc/$PHP_NAME/php-fpm.d/www.conf
 COPY etc/supervisor/conf.d/php-fpm.conf /etc/supervisor/conf.d/php-fpm.conf
 COPY init.d/50-php.sh /docker-entrypoint-init.d/50-php.sh
 COPY pre-init-tests.d/50-php-fpm.sh /docker-entrypoint-pre-init-tests.d/50-php-fpm.sh
 COPY tests.d/50-php-fpm.sh /docker-entrypoint-tests.d/50-php-fpm.sh
-COPY tests.d/52-php-fpm-with-ioncube.sh /docker-entrypoint-tests.d/52-php-fpm-with-ioncube.sh
 RUN set -eux; \
 		chown root:root \
-			"/usr/lib/php7/modules/ioncube_loader_alpine_${PHP_VERSION}_${IONCUBE_VERSION}.so" \
-			/etc/php7/conf.d/50-docker.ini \
-			/etc/php7/php-fpm.d/www.conf \
+			/etc/$PHP_NAME/conf.d/50-docker.ini \
+			/etc/$PHP_NAME/php-fpm.d/www.conf \
 			/etc/supervisor/conf.d/php-fpm.conf \
 			/docker-entrypoint-init.d/50-php.sh \
 			/docker-entrypoint-pre-init-tests.d/50-php-fpm.sh \
 			/docker-entrypoint-tests.d/50-php-fpm.sh; \
 		chmod 0644 \
-			/etc/php7/conf.d/50-docker.ini \
-			/etc/php7/php-fpm.d/www.conf \
+			/etc/$PHP_NAME/conf.d/50-docker.ini \
+			/etc/$PHP_NAME/php-fpm.d/www.conf \
 			/etc/supervisor/conf.d/php-fpm.conf; \
 		chmod 0755 \
-			"/usr/lib/php7/modules/ioncube_loader_alpine_${PHP_VERSION}_${IONCUBE_VERSION}.so" \
 			/docker-entrypoint-init.d/50-php.sh \
 			/docker-entrypoint-pre-init-tests.d/50-php-fpm.sh \
 			/docker-entrypoint-tests.d/50-php-fpm.sh
