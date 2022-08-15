@@ -3,8 +3,8 @@ FROM registry.gitlab.iitsp.com/allworldit/docker/postfix:latest
 ARG VERSION_INFO=
 LABEL maintainer="Nigel Kukard <nkukard@LBSD.net>"
 
-ENV PHP_NAME=php8
-ENV PHP_VERSION=8.0
+ENV PHP_NAME=php81
+ENV PHP_VERSION=8.1
 
 RUN set -ex; \
 	true "Nginx"; \
@@ -28,7 +28,6 @@ RUN set -ex; \
 		$PHP_NAME-json \
 		$PHP_NAME-ldap \
 		$PHP_NAME-mbstring \
-		$PHP_NAME-pecl-mcrypt \
 		$PHP_NAME-opcache \
 		$PHP_NAME-openssl \
 		$PHP_NAME-pecl-imagick \
