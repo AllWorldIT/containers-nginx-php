@@ -28,7 +28,6 @@ RUN set -ex; \
 		$PHP_NAME-json \
 		$PHP_NAME-ldap \
 		$PHP_NAME-mbstring \
-		$PHP_NAME-pecl-mcrypt \
 		$PHP_NAME-opcache \
 		$PHP_NAME-openssl \
 		$PHP_NAME-pecl-imagick \
