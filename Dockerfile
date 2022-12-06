@@ -1,4 +1,4 @@
-FROM registry.gitlab.iitsp.com/allworldit/docker/nginx:latest
+FROM registry.gitlab.iitsp.com/allworldit/docker/nginx/v3.17:latest
 
 ARG VERSION_INFO=
 LABEL maintainer="Nigel Kukard <nkukard@LBSD.net>"
