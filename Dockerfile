@@ -80,5 +80,5 @@ RUN set -eux; \
 			/docker-entrypoint-tests.d/50-php-fpm.sh
 
 # Health check
-HEALTHCHECK CMD curl --fail http://localhost
+HEALTHCHECK CMD curl --silent --fail http://localhost
 
