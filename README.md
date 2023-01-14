@@ -1,47 +1,154 @@
-# Introduction
+[![pipeline status](https://gitlab.conarx.tech/containers/nginx-php/badges/main/pipeline.svg)](https://gitlab.conarx.tech/containers/nginx-php/-/commits/main)
 
-This is a LEP (Linux Nginx PHP) container for hosting various types of PHP sites.
+# Container Information
 
-Check the [Alpine Base Image](https://gitlab.iitsp.com/allworldit/docker/alpine/README.md) for more settings.
+[Container Source](https://gitlab.conarx.tech/containers/nginx-php) - [GitHub Mirror](https://github.com/AllWorldIT/containers-nginx-php)
 
-This image has a health check which checks `http://localhost` for a response.
+This is the Conarx Containers Nginx PHP image, it provides the Nginx webserver bundled with PHP and most of the common PHP
+modules, it is commonly used to host various PHP apps.
+
+The following PHP modules are included:
+
+* bcmath
+* brotli
+* ctype
+* curl
+* dom
+* exif
+* fileinfo
+* fpm
+* gd
+* gettext
+* gmp
+* iconv
+* imap
+* intl
+* json
+* ldap
+* mbstring
+* opcache
+* openssl
+* pcntl
+* pdo_mysql
+* pdo_pgsql
+* pecl-imagick
+* pecl-mailparse
+* pecl-maxminddb
+* pecl-memcache
+* pecl-memcached
+* pecl-mongodb
+* pecl-redis
+* pecl-uploadprogress
+* pecl-uuid
+* pecl-zstd
+* phar
+* posix
+* session
+* simplexml
+* soap
+* sockets
+* sodium
+* sqlite3
+* xml
+* xmlreader
+* xmlwriter
+* xsl
+* zip
 
 
-# Environment
 
-## ENABLE_IONCUBE=yes
+# Mirrors
 
-If set to "yes", this will enable ionCube support.
+|  Provider  |  Repository                               |
+|------------|-------------------------------------------|
+| DockerHub  | allworldit/nginx-php                      |
+| Conarx     | registry.conarx.tech/containers/nginx-php |
 
-## PHP_TIMEZONE=UTC
 
-Set PHP timezone.
+
+# Commercial Support
+
+Commercial support is available from [Conarx](https://conarx.tech).
+
+
+
+# Environment Variables
+
+
+## PHP_MEMORY_LIMIT
+
+Maximum amount of memory usable by PHP, must be greater than `PHP_MAX_UPLOAD_SIZE`. Defaults to `128M`.
+
+
+## PHP_MAX_UPLOAD_SIZE
+
+Maximum client upload size. Defaults to `64M`.
+
+
+## PHP_TIMEZONE
+
+PHP timezone. Defaults to `UTC`.
+
+
+## PHP_FPM_MAX_CHILDREN
+
+Maximum number of php-fpm children. Defaults to `5`.
+
+
+## PHP_FPM_START_SERVERS
+
+Number of php-fpm servers to start. Defaults to `2`.
+
 
 
 # Configuration
 
-## Nginx
+In addition to the configuration files included in the
+[Conarx Containers Nginx image](https://gitlab.iitsp.com/allworldit/docker/alpine/README.md), the following additional files are
+of interest...
 
-The default document root is `/var/www/html`.
 
-By default nginx is configured to answer with 404 in `/etc/nginx/conf.d/default.conf`. PHP is not enabled by default.
+| Path                                | Description                                |
+|-------------------------------------|--------------------------------------------|
+| /etc/php/conf.d/20-fdc-defaults.ini | Default PHP INI configuration              |
+| /etc/php/conf.d/20-fdc-timezone.ini | Generated from the value in `PHP_TIMEZONE` |
+| /etc/php/php-fpm.d/www.conf         | Configuration for php-fpm                  |
 
-If you want to set a domain and have the default 404 for domains not configured then bind mount to
-`/etc/nginx/conf.d/NAME.conf`.
 
-Alternatively you can bind mount over `/etc/nginx/conf.d/default.conf`.
 
-An example of a basic PHP configuration can be found below...
-```
+# Virtual Hosts for PHP
+
+An example of the default vhost configuration for PHP can be found below...
+
+```nginx
 server {
-	listen 80;
+	listen [::]:80 ipv6only=off;
 	server_name localhost;
 
 	root /var/www/html;
 	index index.php;
 
+	location = /favicon.ico {
+		log_not_found off;
+		access_log off;
+	}
+
+	location = /robots.txt {
+		allow all;
+		log_not_found off;
+		access_log off;
+	}
+
+	location ~* \.(js|css|gif|ico|jpg|jpeg|png)$ {
+		expires max;
+	}
+
+	location / {
+		try_files $uri $uri/ /index.php?$args;
+	}
+
 	location ~ [^/]\.php(/|$) {
-		# Mitigation against vulnerabilities in PHP-FPM, just incase
+		# Mitigation against vulnerabilities in php-fpm, just incase
 		fastcgi_split_path_info ^(.+?\.php)(/.*)$;
 
 		# Make sure document exists
@@ -52,25 +159,24 @@ server {
 		# Mitigate https://httpoxy.org/ vulnerabilities
 		fastcgi_param HTTP_PROXY "";
 
-		# Pass request to PHP-FPM
+		# Pass request to php-fpm
 		fastcgi_pass unix:/run/php-fpm.sock;
 		fastcgi_index index.php;
 
 		# Include fastcgi_params settings
 		include fastcgi_params;
 
-		# PHP-FPM requires the SCRIPT_FILENAME to be set
+		# php-fpm requires the SCRIPT_FILENAME to be set
 		fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
 
-		# Dokuwiki config
 		fastcgi_param REDIRECT_STATUS 200;
 	}
 }
 ```
 
-## PHP
 
-The docker containr PHP settings are added as `/etc/$PHP_NAME/conf.d/50-docker.ini`.
 
-To specify custom settings you can bind mount with a higher priority number than 50 in the same directory.
+# Health Checks
 
+Health checks are done by the underlying
+[Conarx Containers Nginx image](https://gitlab.iitsp.com/allworldit/docker/alpine/README.md).
