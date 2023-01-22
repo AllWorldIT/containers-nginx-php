@@ -66,13 +66,44 @@ The following PHP modules are included:
 
 
 
+# Conarx Containers
+
+All our Docker images are part of our Conarx Containers product line. Images are generally based on Alpine Linux and track the
+Alpine Linux major and minor version in the format of `vXX.YY`.
+
+Images built from source track both the Alpine Linux major and minor versions in addition to the main software component being
+built in the format of `vXX.YY-AA.BB`, where `AA.BB` is the main software component version.
+
+Our images are built using our Flexible Docker Containers framework which includes the below features...
+
+- Flexible container initialization and startup
+- Integrated unit testing
+- Advanced multi-service health checks
+- Native IPv6 support for all containers
+- Debugging options
+
+
+
+# Community Support
+
+Please use the project [Issue Tracker](https://gitlab.conarx.tech/containers/nginx-php/-/issues).
+
+
+
 # Commercial Support
 
-Commercial support is available from [Conarx](https://conarx.tech).
+Commercial support for all our Docker images is available from [Conarx](https://conarx.tech).
+
+We also provide consulting services to create and maintain Docker images to meet your exact needs.
 
 
 
 # Environment Variables
+
+Additional environment variables are available from...
+* [Conarx Containers Nginx image](https://gitlab.conarx.tech/containers/nginx)
+* [Conarx Containers Postfix image](https://gitlab.conarx.tech/containers/postfix)
+* [Conarx Containers Alpine image](https://gitlab.conarx.tech/containers/alpine).
 
 
 ## PHP_MEMORY_LIMIT
@@ -98,6 +129,23 @@ Maximum number of php-fpm children. Defaults to `5`.
 ## PHP_FPM_START_SERVERS
 
 Number of php-fpm servers to start. Defaults to `2`.
+
+
+
+# Volumes
+
+
+## /var/www/html
+
+Document root.
+
+
+
+# Exposed Ports
+
+Postfix port 25 is exposed by the [Conarx Containers Postfix image](https://gitlab.conarx.tech/containers/postfix) layer.
+
+Nginx port 80 is exposed by the [Conarx Containers Nginx image](https://gitlab.conarx.tech/containers/nginx) layer.
 
 
 
@@ -179,4 +227,4 @@ server {
 # Health Checks
 
 Health checks are done by the underlying
-[Conarx Containers Nginx image](https://gitlab.iitsp.com/allworldit/docker/alpine/README.md).
+[Conarx Containers Nginx image](https://gitlab.iitsp.com/allworldit/docker/nginx/README.md).
