@@ -30,7 +30,7 @@ LABEL org.opencontainers.image.base.name = "registry.conarx.tech/containers/ngin
 ENV PHP_NAME=php81
 ENV PHP_VERSION=8.1
 
-RUN set -ex; \
+RUN set -eux; \
 	true "php-fpm"; \
 	apk add --no-cache $PHP_NAME \
 		$PHP_NAME-bcmath \
