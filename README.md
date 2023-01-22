@@ -152,7 +152,7 @@ Nginx port 80 is exposed by the [Conarx Containers Nginx image](https://gitlab.c
 # Configuration
 
 In addition to the configuration files included in the
-[Conarx Containers Nginx image](https://gitlab.iitsp.com/allworldit/docker/alpine/README.md), the following additional files are
+[Conarx Containers Nginx image](https://gitlab.iitsp.com/allworldit/docker/nginx/README.md), the following additional files are
 of interest...
 
 
