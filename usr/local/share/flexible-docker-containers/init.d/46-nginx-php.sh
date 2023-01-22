@@ -20,11 +20,13 @@
 # IN THE SOFTWARE.
 
 
+fdc_notice "Initializing Nginx PHP settings"
+
 # Default to UTC timezone
 if [ -z "$PHP_TIMEZONE" ]; then
 	PHP_TIMEZONE=UTC
 fi
-echo "NOTICE: Setting PHP timezone to '$PHP_TIMEZONE'"
+fdc_notice "Setting PHP timezone to '$PHP_TIMEZONE'"
 # Check if we have a timezone and set it
 cat <<EOF > "/etc/$PHP_NAME/conf.d/20-fdc-timezone.ini"
 [Date]
@@ -37,11 +39,11 @@ EOF
 #
 
 if [ -n "$PHP_FPM_MAX_CHILDREN" ]; then
-	echo "NOTICE: Setting php-fpm max children to '$PHP_FPM_MAX_CHILDREN'"
+	fdc_notice "Setting php-fpm max children to '$PHP_FPM_MAX_CHILDREN'"
 	sed -i -e "s/pm.max_children = 5/pm.max_children = $PHP_FPM_MAX_CHILDREN/" "/etc/$PHP_NAME/php-fpm.d/www.conf"
 fi
 
 if [ -n "$PHP_FPM_START_SERVERS" ]; then
-	echo "NOTICE: Setting php-fpm start servers to '$PHP_FPM_START_SERVERS'"
+	fdc_notice "Setting php-fpm start servers to '$PHP_FPM_START_SERVERS'"
 	sed -i -e "s/pm.start_servers = 2/pm.start_servers = $PHP_FPM_START_SERVERS/" "/etc/$PHP_NAME/php-fpm.d/www.conf"
 fi
