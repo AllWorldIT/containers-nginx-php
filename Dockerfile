@@ -49,7 +49,7 @@ RUN set -eux; \
 		$PHP_NAME-intl \
 		$PHP_NAME-json \
 		$PHP_NAME-ldap \
-		$PHP_NAME-mysql \
+		$PHP_NAME-mysqli \
 		$PHP_NAME-mysqlnd \
 		$PHP_NAME-mbstring \
 		$PHP_NAME-opcache \
