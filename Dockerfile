@@ -49,6 +49,8 @@ RUN set -eux; \
 		$PHP_NAME-intl \
 		$PHP_NAME-json \
 		$PHP_NAME-ldap \
+		$PHP_NAME-mysqli \
+		$PHP_NAME-mysqlnd \
 		$PHP_NAME-mbstring \
 		$PHP_NAME-opcache \
 		$PHP_NAME-openssl \
@@ -65,6 +67,7 @@ RUN set -eux; \
 		$PHP_NAME-pecl-uploadprogress \
 		$PHP_NAME-pecl-uuid \
 		$PHP_NAME-pecl-zstd \
+		$PHP_NAME-pgsql \
 		$PHP_NAME-phar \
 		$PHP_NAME-posix \
 		$PHP_NAME-session \

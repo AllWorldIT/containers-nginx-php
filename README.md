@@ -103,7 +103,7 @@ We also provide consulting services to create and maintain Docker images to meet
 Additional environment variables are available from...
 * [Conarx Containers Nginx image](https://gitlab.conarx.tech/containers/nginx)
 * [Conarx Containers Postfix image](https://gitlab.conarx.tech/containers/postfix)
-* [Conarx Containers Alpine image](https://gitlab.conarx.tech/containers/alpine).
+* [Conarx Containers Alpine image](https://gitlab.conarx.tech/containers/alpine)
 
 
 ## PHP_MEMORY_LIMIT
