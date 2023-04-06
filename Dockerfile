@@ -88,7 +88,8 @@ RUN set -eux; \
 
 
 # Nginx - override the default vhost to include PHP support
-COPY etc/nginx/http.d/50_vhost_default.conf /etc/nginx/http.d
+COPY etc/nginx/http.d/50_vhost_default.conf.template /etc/nginx/http.d
+COPY etc/nginx/http.d/50_vhost_default-ssl-certbot.conf.template /etc/nginx/http.d
 
 
 # php-fpm
@@ -101,9 +102,13 @@ RUN set -eux; \
 	true "Flexible Docker Containers"; \
 	if [ -n "$VERSION_INFO" ]; then echo "$VERSION_INFO" >> /.VERSION_INFO; fi; \
 	chown root:root \
+		/etc/nginx/http.d/50_vhost_default.conf.template \
+		/etc/nginx/http.d/50_vhost_default-ssl-certbot.conf.template \
 		/etc/$PHP_NAME/conf.d/20-fdc-defaults.ini \
 		/etc/$PHP_NAME/php-fpm.d/www.conf; \
 	chmod 0644 \
+		/etc/nginx/http.d/50_vhost_default.conf.template \
+		/etc/nginx/http.d/50_vhost_default-ssl-certbot.conf.template \
 		/etc/$PHP_NAME/conf.d/20-fdc-defaults.ini \
 		/etc/$PHP_NAME/php-fpm.d/www.conf; \
 	true "Permissions"; \
