@@ -69,4 +69,7 @@ server {
 
 		fastcgi_param REDIRECT_STATUS 200;
 	}
+
+	ssl_certificate /etc/letsencrypt/live/@CERTBOT_CERT_NAME@/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/@CERTBOT_CERT_NAME@/privkey.pem;
 }
