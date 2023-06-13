@@ -57,6 +57,7 @@ RUN set -eux; \
 		$PHP_NAME-pcntl \
 		$PHP_NAME-pdo_mysql \
 		$PHP_NAME-pdo_pgsql \
+		$PHP_NAME-pecl-apcu \
 		$PHP_NAME-pecl-imagick \
 		$PHP_NAME-pecl-mailparse \
 		$PHP_NAME-pecl-maxminddb \
