@@ -77,6 +77,7 @@ RUN set -eux; \
 		$PHP_NAME-sockets \
 		$PHP_NAME-sodium \
 		$PHP_NAME-sqlite3 \
+		$PHP_NAME-sysvsem \
 		$PHP_NAME-xml \
 		$PHP_NAME-xmlreader \
 		$PHP_NAME-xmlwriter \
