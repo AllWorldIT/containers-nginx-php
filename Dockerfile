@@ -95,7 +95,7 @@ COPY etc/nginx/http.d/55_vhost_default-ssl-certbot.conf.template /etc/nginx/http
 
 
 # php-fpm
-COPY etc/php/conf.d/20-fdc-defaults.ini /etc/$PHP_NAME/conf.d
+COPY etc/php/conf.d/20_fdc_defaults.ini /etc/$PHP_NAME/conf.d
 COPY etc/php/php-fpm.d/www.conf /etc/$PHP_NAME/php-fpm.d
 COPY etc/supervisor/conf.d/php-fpm.conf /etc/supervisor/conf.d
 COPY usr/local/share/flexible-docker-containers/init.d/46-nginx-php.sh /usr/local/share/flexible-docker-containers/init.d
@@ -106,12 +106,12 @@ RUN set -eux; \
 	chown root:root \
 		/etc/nginx/http.d/50_vhost_default.conf.template \
 		/etc/nginx/http.d/55_vhost_default-ssl-certbot.conf.template \
-		/etc/$PHP_NAME/conf.d/20-fdc-defaults.ini \
+		/etc/$PHP_NAME/conf.d/20_fdc_defaults.ini \
 		/etc/$PHP_NAME/php-fpm.d/www.conf; \
 	chmod 0644 \
 		/etc/nginx/http.d/50_vhost_default.conf.template \
 		/etc/nginx/http.d/55_vhost_default-ssl-certbot.conf.template \
-		/etc/$PHP_NAME/conf.d/20-fdc-defaults.ini \
+		/etc/$PHP_NAME/conf.d/20_fdc_defaults.ini \
 		/etc/$PHP_NAME/php-fpm.d/www.conf; \
 	true "Permissions"; \
 	fdc set-perms
