@@ -158,8 +158,8 @@ of interest...
 
 | Path                                | Description                                |
 |-------------------------------------|--------------------------------------------|
-| /etc/php/conf.d/20-fdc-defaults.ini | Default PHP INI configuration              |
-| /etc/php/conf.d/20-fdc-timezone.ini | Generated from the value in `PHP_TIMEZONE` |
+| /etc/php/conf.d/20_fdc_defaults.ini | Default PHP INI configuration              |
+| /etc/php/conf.d/20_fdc_timezone.ini | Generated from the value in `PHP_TIMEZONE` |
 | /etc/php/php-fpm.d/www.conf         | Configuration for php-fpm                  |
 
 
