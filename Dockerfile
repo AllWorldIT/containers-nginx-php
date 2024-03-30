@@ -85,6 +85,8 @@ RUN set -eux; \
 		$PHP_NAME-zip \
 		graphviz ttf-droid ttf-liberation ttf-dejavu ttf-opensans \
 		; \
+	# Symlink php for backwards compatibility
+	ln -s /usr/bin/$PHP_NAME /usr/bin/php; \
 	true "Cleanup"; \
 	rm -f /var/cache/apk/*
 
