@@ -28,6 +28,7 @@ LABEL org.opencontainers.image.base.name "registry.conarx.tech/containers/nginx/
 
 
 ENV PHP_NAME=php82
+ENV PHP_FPM_NAME=php-fpm82
 ENV PHP_VERSION=8.2
 
 RUN set -eux; \
@@ -87,6 +88,7 @@ RUN set -eux; \
 		; \
 	# Symlink php for backwards compatibility
 	ln -s /usr/bin/$PHP_NAME /usr/bin/php; \
+	ln -s /usr/sbin/$PHP_FPM_NAME /usr/sbin/php-fpm; \
 	true "Cleanup"; \
 	rm -f /var/cache/apk/*
 
