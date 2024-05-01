@@ -27,8 +27,8 @@ LABEL org.opencontainers.image.version   "edge"
 LABEL org.opencontainers.image.base.name "registry.conarx.tech/containers/nginx/edge"
 
 
-ENV PHP_NAME=php81
-ENV PHP_VERSION=8.1
+ENV PHP_NAME=php82
+ENV PHP_VERSION=8.2
 
 RUN set -eux; \
 	true "php-fpm"; \
