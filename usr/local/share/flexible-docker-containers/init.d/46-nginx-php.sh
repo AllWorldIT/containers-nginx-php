@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2022-2023, AllWorldIT.
+# Copyright (c) 2022-2025, AllWorldIT.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to
@@ -28,10 +28,19 @@ if [ -z "$PHP_TIMEZONE" ]; then
 fi
 fdc_notice "Setting PHP timezone to '$PHP_TIMEZONE'"
 # Check if we have a timezone and set it
-cat <<EOF > "/etc/$PHP_NAME/conf.d/20-fdc-timezone.ini"
+cat <<EOF > "/etc/$PHP_NAME/conf.d/20_fdc_timezone.ini"
 [Date]
 date.timezone=$PHP_TIMEZONE
 EOF
+
+# Check if we're setting PHP memory size
+if [ -n "$PHP_MEMORY_LIMIT" ]; then
+	fdc_notice "Setting PHP memory limit to '$PHP_MEMORY_LIMIT'"
+	cat <<EOF > "/etc/$PHP_NAME/conf.d/30_fdc_memory_limit.ini"
+[PHP]
+memory_limit = $PHP_MEMORY_LIMIT
+EOF
+fi
 
 
 #
